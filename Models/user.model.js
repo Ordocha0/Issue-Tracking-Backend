@@ -31,13 +31,15 @@ const User = sequelize.define(
     paranoid: true,
     deletedAt: 'deleted_at',
 
-    // hide timestamps by default
     defaultScope: {
-      attributes: { exclude: ['created_at', 'updated_at', 'deleted_at'] }
+      attributes: { exclude: ['created_at', 'updated_at', 'deleted_at' , 'password'] }
     },
     scopes: {
       withDeleted: {
         attributes: { include: ['deleted_at'] }
+      },
+      withPassword: {
+        attributes: { include: ['password'] }
       }
     }
   }

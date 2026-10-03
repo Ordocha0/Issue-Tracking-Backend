@@ -1,5 +1,4 @@
-import {User} from "../Models/index.js";
-import { Op } from "sequelize";
+import {User} from '../Models/index.js';
 
 export const createUserRepository = async (data) => {
   try {
@@ -27,7 +26,7 @@ export const updateUserRepository = async (id, data) => {
       throw new Error('User not found');
     }
 
-    await user.update(data);
+    await user.update({...data , updated_at: new Date()});
     
     return user;
   } catch (error) {
@@ -35,22 +34,26 @@ export const updateUserRepository = async (id, data) => {
   }
 }
 
-export const getUserByUsernameRepository = async (searchQuery) =>
-  {
-      try {
-    const users = await User.findAll({
-      where: {
-        [Op.or]: [
-          { username: { [Op.iLike]: `%${searchQuery}%` } },
-          // { email: { [Op.iLike]: `%${searchQuery}%` } },
-          // { event_location: { [Op.iLike]: `%${searchQuery}%` } },
-        ],
-      },
-      order: [["created_at", "DESC"]],
-    });
+export const deleteUserRepository = async (id) => {
+  try {
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-    return users;
+    await user.destroy();
+    
+    return user;
   } catch (error) {
     throw error;
   }
+}
+
+export const getUserByEmailRespository  = async (email) => {
+  try {
+    const user = await User.findOne({ where: { email } });
+    return user;
+  } catch (error) {
+    throw error;
   }
+}
