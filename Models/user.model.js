@@ -32,12 +32,9 @@ const User = sequelize.define(
     deletedAt: 'deleted_at',
 
     defaultScope: {
-      attributes: { exclude: ['created_at', 'updated_at', 'deleted_at' , 'password'] }
+      attributes: { exclude: ['password'] }
     },
     scopes: {
-      withDeleted: {
-        attributes: { include: ['deleted_at'] }
-      },
       withPassword: {
         attributes: { include: ['password'] }
       }

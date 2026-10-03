@@ -49,7 +49,26 @@ export const deleteUserRepository = async (id) => {
   }
 }
 
-export const getUserByEmailRespository  = async (email) => {
+export const getUserByidRepository  = async (id) => {
+  try {
+    const user = await User.findByPk(id);
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getUserPasswordRepository  = async (id) => {
+  try {
+    const user = await User.withPassword().findByPk(id);
+    return user.password;
+  } catch (error) {
+    throw error;
+  }
+}
+
+  
+export const getUserByEmailRepository  = async (email) => {
   try {
     const user = await User.findOne({ where: { email } });
     return user;

@@ -1,8 +1,3 @@
-
+// utils/logger.js
 import pino from 'pino';
-
-const logger = pino({
-  level: 'info', 
-});
-
-export default logger;
+export const logger = pino();
