@@ -5,10 +5,10 @@ export const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
+      req.log.warn("No token provided");
       return res.status(401).json({ detail: 'You are not authenticated!' });
-    }
-
-    const token = authHeader.split(' ')[1];
+    }else{
+      const token = authHeader.split(' ')[1];
 
     const decoded = jwt.verify(
       token,
@@ -18,8 +18,12 @@ export const verifyToken = (req, res, next) => {
 
       req.user = decoded;
       next();
+    }
+
+    
 
   } catch (error) {
+    req.log.warn("Invalid token provided");
     return res.status(401).json({ detail: 'Invalid authentication token' });
   }
 };

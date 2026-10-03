@@ -22,14 +22,37 @@ app.use(pinoHttp({
     options: {
       colorize: true,
       translateTime: 'SYS:standard',
-      ignore: 'pid,hostname'
+      ignore: 'pid,hostname',
+      singleLine: true,
     }
-  }
+  },
+  serializers: {
+    req(req) {
+      return {
+        method: req.method,
+        url: req.url,
+      };
+    },
+    res(res) {
+      return {
+        statusCode: res.statusCode,
+      };
+    },
+    // Tame the automatic `err` output too
+    err(err) {
+      return {
+        type: err.type,
+        message: err.message,
+      };
+    },
+  },
+  autoLogging: false,
 }));
+
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!")
+  res.status(200).json({});
 })
 
 
