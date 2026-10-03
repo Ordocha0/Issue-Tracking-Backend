@@ -1,24 +1,23 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Utils/db.js';
 
-const User = sequelize.define(
-  'users',
+const Issues = sequelize.define(
+  'issues',
   {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    email: {
+    title: {
       type: DataTypes.STRING,
-      unique: true,
-      validate: { isEmail: true }
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
+    description: DataTypes.TEXT,
     phone: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role : DataTypes.ENUM('admin', 'user'),
+    status : DataTypes.ENUM('open', 'in progress' , 'resolved' , 'closed'),
+    priority : DataTypes.ENUM('low', 'medium' , 'high'),
+    created_by : DataTypes.UUID,
+    assigned_to : DataTypes.UUID,
     created_at: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
     updated_at: { type: DataTypes.DATE, allowNull: true },
     deleted_at: { type: DataTypes.DATE, allowNull: true }
@@ -43,4 +42,4 @@ const User = sequelize.define(
   }
 );
 
-export default User;
+export default Issues;
