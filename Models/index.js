@@ -1,3 +1,11 @@
 import User from "./user.model.js";
+import Issues from "./tickets.model.js";
 
-export { User }
+
+User.hasMany(Issues, { foreignKey: 'created_by' });
+Issues.belongsTo(User, { foreignKey: 'created_by' });
+
+User.hasMany(Issues, { foreignKey: 'assigned_to' });
+Issues.belongsTo(User, { foreignKey: 'assigned_to' });
+
+export { User , Issues };
