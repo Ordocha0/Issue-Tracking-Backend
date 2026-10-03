@@ -4,20 +4,22 @@ import {
   getUserByIdController,
   updateUserController,
   deleteUserController,
-  loginUserController
+  loginUserController,
+  getUserProfileController
 } from "../Controllers/User.controller.js";
 
 const router = express.Router();
 import {verifyToken} from "../Middleware/jwt_token_verification.js";
 
-router.use(verifyToken);
+// router.use(verifyToken);
 
 router.post("/login", loginUserController);
+router.get("/profile", getUserProfileController);
 
-router.post("/", createUserController);
-router.get("/", getUserByIdController);
-router.put("/", updateUserController);
-router.delete("/", deleteUserController);
+router.post("/register", createUserController);
+router.get("/get/:id", verifyToken, getUserByIdController);
+router.put("/", verifyToken, updateUserController);
+router.delete("/", verifyToken, deleteUserController);
 
 
 export default router;

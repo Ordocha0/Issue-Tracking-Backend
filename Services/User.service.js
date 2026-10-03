@@ -4,19 +4,22 @@ import {
   updateUserRepository,
   deleteUserRepository,
   getUserByEmailRepository,
-  getUserPasswordRepository
+  getUserPasswordRepository,
+  checkDeletedUserRepository
 } from '../Repositories/User.repository.js';
 
 import { comparePassword , hashPassword } from '../Utils/bcrypt.js';
 
 export const createUserService = async (data) => {
-  try {
+
     const {email , first_name ,last_name , phone , password , role } = data
 
     // verify if a user exists
-    const existingUser = await getUserByEmailRepository(email);
-    if (existingUser) {
-      throw new Error('User already exists');
+    const deletedUser = await checkDeletedUserRepository(email);
+    if (deletedUser) {
+      const err =  new Error('User already exists');
+      err.statusCode = 400;
+      throw err;
     }
 
     // Hash password
@@ -27,19 +30,18 @@ export const createUserService = async (data) => {
 
     // TODO: Send email to user
     return user;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export const updateUserService = async (id, data) => {
-  try {
+
     const {email , first_name ,last_name , phone , password , role } = data
 
     // verify if a user exists
     const existingUser = await getUserByIdRepository(id);
     if (!existingUser) {
-      throw new Error('User not found');
+      const err = new Error('User not found');
+      err.statusCode = 400;
+      throw err;
     }
 
     // Update user Details
@@ -47,18 +49,17 @@ export const updateUserService = async (id, data) => {
 
     // TODO: Send email to user
     return user;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export const deleteUserService = async (id) => {
-  try {
+
 
         // verify if a user exists
     const existingUser = await getUserByIdRepository(id);
     if (!existingUser) {
-      throw new Error('User not found');
+            const err =  new Error('User already exists');
+      err.statusCode = 400;
+      throw err;
     }
 
     // Delete user
@@ -66,16 +67,15 @@ export const deleteUserService = async (id) => {
 
     // TODO: Send email to user
     return user;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export const loginUserService = async (email , password) => {
-  try {
+
     const user = await getUserByEmailRepository(email);
     if (!user) {
-      throw new Error('User not found');
+            const err =  new Error('User already exists');
+      err.statusCode = 400;
+      throw err;
     }
 
     const hashedPassword = await getUserPasswordRepository(user.id);
@@ -86,16 +86,10 @@ export const loginUserService = async (email , password) => {
 
     // TODO: Send valid token and refresh token
     return user;
-  } catch (error) {
-    throw error;
-  }
 }
 
 export const getUserService = async (id) => {
-  try {
+
     const user = await getUserByIdRepository(id);
     return user;
-  } catch (error) {
-    throw error;
-  }
 }
