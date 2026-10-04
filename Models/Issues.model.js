@@ -13,8 +13,10 @@ const Issues = sequelize.define(
       type: DataTypes.STRING,
     },
     description: DataTypes.TEXT,
-    phone: DataTypes.STRING,
-    status : DataTypes.ENUM('open', 'in progress' , 'resolved' , 'closed'),
+    status : {
+      type :DataTypes.ENUM('open', 'in progress' , 'resolved' , 'closed'),
+      defaultValue : 'open'
+    },
     priority : DataTypes.ENUM('low', 'medium' , 'high'),
     created_by : DataTypes.UUID,
     assigned_to : DataTypes.UUID,
@@ -38,7 +40,13 @@ const Issues = sequelize.define(
       withDeleted: {
         attributes: { include: ['deleted_at'] }
       }
-    }
+    },
+    indexes: [
+      {
+        unique: true,
+        fields: ['title' , 'created_by' , 'assigned_to']
+      }
+    ]
   }
 );
 

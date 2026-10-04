@@ -14,7 +14,7 @@ import {verifyToken} from "../Middleware/jwt_token_verification.js";
 // router.use(verifyToken);
 
 router.post("/login", loginUserController);
-router.get("/profile", getUserProfileController);
+router.get("/profile", verifyToken, getUserProfileController);
 
 router.post("/register", createUserController);
 router.get("/get/:id", verifyToken, getUserByIdController);

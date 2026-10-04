@@ -1,5 +1,5 @@
 import User from "./user.model.js";
-import Issues from "./tickets.model.js";
+import Issues from "./Issues.model.js";
 
 
 User.hasMany(Issues, { foreignKey: 'created_by' });
