@@ -4,9 +4,9 @@
 import {createIssuesRepository , getIssuesByUserIdRepository , getIssuesAssignedToRepository , updateIssuesRepository , deleteIssuesRepository , getIssuesByidRepository , getIssuesByTitleRepository } from '../Repositories/Issues.repository.js';
 import { getUserByIdRepository } from '../Repositories/User.repository.js';
 
-export const createIssuesService = async (data) => {
+export const createIssuesService = async (data , created_by) => {
 
-    const {title , description ,status , priority , created_by , assigned_to } = data
+    const {title , description ,status , priority  , assigned_to } = data
 
     // verify if a user exists
     const creatingUser = await getUserByIdRepository(created_by);
@@ -32,6 +32,7 @@ export const createIssuesService = async (data) => {
 }
 
 export const getIssuesCreatedByService = async (id) => {
+
     const issues = await getIssuesByUserIdRepository(id);
     return issues;
 }
@@ -41,18 +42,20 @@ export const getIssuesAssignedService = async (id) => {
     return issues;
 }
 
-export const updateIssuesService = async (id , data) => {
+export const updateIssuesService = async (id , data , userId) => {
 
   const {title , description ,status , priority  , assigned_to } = data
 
-      const assignedUser = await getUserByIdRepository(assigned_to);
+    if(assigned_to){
+    const assignedUser = await getUserByIdRepository(assigned_to);
     if (!assignedUser) {
       const err =  new Error('Assigned user not found');
       err.statusCode = 400;
       throw err;
     }
+    }
 
-    const issues = await updateIssuesRepository(id , {title , description ,status , priority  , assigned_to });
+    const issues = await updateIssuesRepository(id , {title , description ,status , priority  , assigned_to } , userId);
 
     // TODO: Send email to user
     return issues;

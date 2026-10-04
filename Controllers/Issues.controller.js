@@ -12,7 +12,8 @@ import {generateJWTToken} from '../Utils/jwt.js';
 
 export const createIssuesController = async (req, res) => {
   try {
-    const user = await createIssuesService(req.body);
+    const userId = req.user.id;
+    const user = await createIssuesService(req.body , userId);
 
     req.log.info({ issueId: req.params.id }, 'Issue created');
     res.status(201).json(user);
@@ -26,6 +27,7 @@ export const createIssuesController = async (req, res) => {
 export const getIssuesCreatedByController = async (req, res) => {
   try {
     const userId = req.params.userId || req.user.id;
+    // console.log(userId)
     const issues = await getIssuesCreatedByService(userId);
 
     req.log.info({ issueId: req.params.id }, 'Issues by created user fetched');
@@ -54,13 +56,14 @@ export const getIssuesAssignedController = async (req, res) => {
 export const updateIssuesController = async (req, res) => {
   try {
     const issueId = req.params.issueId;
+    const userId = req.user.id;
     // verify params is passed 
     if(!issueId){
       const err =  new Error('Issue id is required');
       err.statusCode = 400;
       throw err;
     }
-    const issues = await updateIssuesService(issueId, req.body);
+    const issues = await updateIssuesService(issueId, req.body , userId);
 
     req.log.info({ issueId: req.params.id }, 'Issues updated');
     res.status(201).json(issues);
@@ -117,7 +120,7 @@ export const getIssuesByIdController = async (req, res) => {
 
 export const getIssuesByTitleController = async (req, res) => {
   try {
-    const title = req.params.title;
+    const {title} = req.query;
     const userId = req.user.id;
     // verify params is passed 
     if(!title){
