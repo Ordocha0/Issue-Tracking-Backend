@@ -128,4 +128,4 @@ For detailed information — including full request/response schemas, data model
 
 ## License
 
-ISC / MIT (update as appropriate for your project).
+ISC.
