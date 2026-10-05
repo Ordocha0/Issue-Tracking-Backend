@@ -5,7 +5,8 @@ import {
   deleteUserRepository,
   getUserByEmailRepository,
   getUserPasswordRepository,
-  checkDeletedUserRepository
+  checkDeletedUserRepository,
+  getUsersRepository
 } from '../Repositories/User.repository.js';
 
 import { comparePassword , hashPassword } from '../Utils/bcrypt.js';
@@ -92,4 +93,10 @@ export const getUserService = async (id) => {
 
     const user = await getUserByIdRepository(id);
     return user;
+}
+
+
+export const getUsersService = async () => {
+  const users = await getUsersRepository();
+  return users;
 }

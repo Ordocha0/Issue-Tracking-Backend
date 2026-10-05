@@ -3,7 +3,8 @@ import {
   updateUserService,
   deleteUserService,
   loginUserService,
-  getUserService
+  getUserService,
+  getUsersService
 } from '../Services/User.service.js';
 import {generateJWTToken} from '../Utils/jwt.js';
 
@@ -101,6 +102,21 @@ export const loginUserController = async (req, res) => {
 
     req.log.info({ userId: req.params.id }, 'User logged in');
     res.status(200).json({...user  , token: JWTToken});
+
+  } catch (error) {
+    req.log.error({ err: error })
+    res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+export const getUsersController = async (req, res) => {
+  const start = process.hrtime.bigint();
+
+  try {
+    const users = await getUsersService();
+
+    req.log.info({ userId: req.params.id }, 'Users fetched');
+    res.status(200).json(users);
 
   } catch (error) {
     req.log.error({ err: error })

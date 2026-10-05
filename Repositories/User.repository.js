@@ -94,3 +94,13 @@ export const checkDeletedUserRepository = async (email) => {
     throw err;
   }
 }
+
+export const getUsersRepository = async () => {
+  try {
+    const users = await User.findAll();
+    return users;
+  } catch (error) {
+          const err =  new Error(error.message);
+    throw err;
+  }
+}

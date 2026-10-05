@@ -5,7 +5,8 @@ import {
   updateUserController,
   deleteUserController,
   loginUserController,
-  getUserProfileController
+  getUserProfileController,
+  getUsersController
 } from "../Controllers/User.controller.js";
 
 const router = express.Router();
@@ -20,6 +21,7 @@ router.post("/register", createUserController);
 router.get("/get/:id", verifyToken, getUserByIdController);
 router.put("/", verifyToken, updateUserController);
 router.delete("/", verifyToken, deleteUserController);
+router.get("/all", verifyToken, getUsersController);
 
 
 export default router;

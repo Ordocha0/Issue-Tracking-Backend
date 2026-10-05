@@ -41,12 +41,12 @@ const Issues = sequelize.define(
         attributes: { include: ['deleted_at'] }
       }
     },
-    indexes: [
-      {
-        unique: true,
-        fields: ['title' , 'created_by' , 'assigned_to']
-      }
-    ]
+    // indexes: [
+    //   {
+    //     unique: true,
+    //     fields: ['title' , 'created_by' , 'assigned_to']
+    //   }
+    // ]
   }
 );
 
